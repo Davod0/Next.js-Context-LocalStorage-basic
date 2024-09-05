@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-// Vad ska skickas över kontexten?
+// Vad ska skickas över kontexten, den ska var en typ, i detta fall ContextValue
 interface ContextValue {
   likedPosts: string[];
   toggleLikedPost: (postId: string) => void;
@@ -21,22 +21,8 @@ const PostContext = createContext<ContextValue>({} as ContextValue);
 // Skapa en provider som innehåller tillstånd och logik.
 // Fungerar som en "wrapper" komponent runt allt annat.
 export default function PostProvider(props: PropsWithChildren) {
+
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Ladda in tillståndet från local storage.
-  useEffect(() => {
-    if (isLoaded) return;
-    const stringifiedState = localStorage.getItem("likedPosts");
-    setLikedPosts(JSON.parse(stringifiedState ?? "[]"));
-    setIsLoaded(true);
-  }, [isLoaded]);
-
-  // Spara tillståndet till LS när det ändras.
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
-  }, [isLoaded, likedPosts]);
 
   const toggleLikedPost = (postId: string) => {
     const isToggled = likedPosts.some((id) => id === postId);
@@ -53,6 +39,25 @@ export default function PostProvider(props: PropsWithChildren) {
     return likedPosts.some((id) => id === postId);
   };
 
+
+
+
+  const [isLoaded, setIsLoaded] = useState(false);
+   // Ladda in tillståndet från local storage.
+  useEffect(() => {
+    if (isLoaded) return;
+    const stringifiedState = localStorage.getItem("likedPosts");
+    setLikedPosts(JSON.parse(stringifiedState ?? "[]"));
+    setIsLoaded(true);
+  }, [isLoaded]);
+
+  // Spara tillståndet till LS när det ändras.
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+  }, [isLoaded, likedPosts]);
+
+  
   return (
     <PostContext.Provider
       value={{ likedPosts, toggleLikedPost, getIsLikedPost }}
@@ -64,3 +69,12 @@ export default function PostProvider(props: PropsWithChildren) {
 
 // Skapa en liten wrapper hook for att konsumera kontexten.
 export const useLikedPosts = () => useContext(PostContext);
+
+
+
+
+
+  
+
+
+ 

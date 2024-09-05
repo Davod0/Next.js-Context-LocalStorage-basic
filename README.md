@@ -1,1 +1,1 @@
-This project is for learning purposes, aimed at improving my skills in the Next.js framework.
+"This project is for learning purposes, aimed at improving my skills in the Next.js framework, particularly focusing on using and working with Context and localStorage in Next.js
